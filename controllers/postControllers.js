@@ -40,6 +40,7 @@ const createPost = (post) => {
 };
 
 const updatePost = (currentPosts, index, newData, isPatch) => {
+  console.log(index);
   if (!isPatch) {
     currentPosts[index] = { ...newData, id: currentPosts[index].id };
   } else {
@@ -70,9 +71,41 @@ const deletePost = (receivedPosts, postIndex) => {
   });
 };
 
+const currentPost = (id) => {
+  return new Promise((resolve, reject) => {
+    getPosts()
+      .then((receivedPosts) => {
+        const postIndex = receivedPosts.findIndex((el) => el.id === Number(id));
+        if (postIndex !== -1) {
+          console.log(receivedPosts[postIndex]);
+          resolve(receivedPosts[postIndex]);
+        } else {
+          reject(error.message);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        reject(err);
+      });
+  });
+};
+
+const getPostsbylimit = async (offset, limit) => {
+  try {
+    const posts = await getPosts();
+    return posts.splice(offset, limit);
+  } catch (err) {
+    throw new Error(
+      `Not able to get posts with offset ${offset} and limit ${limit}`
+    );
+  }
+};
+
 module.exports = {
   getPosts,
   createPost,
   deletePost,
   updatePost,
+  currentPost,
+  getPostsbylimit,
 };

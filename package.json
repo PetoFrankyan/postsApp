@@ -1,0 +1,20 @@
+{
+  "name": "project-posts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "posts.js",
+  "scripts": {
+    "start": "node main.js",
+    "dev": "nodemon -e js main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.4.1"
+  }
+}
