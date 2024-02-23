@@ -1,42 +1,45 @@
 const Ajv = require("ajv");
 const ajv = new Ajv({ allErrors: true });
 
+
 const postsSchema = {
   type: "object",
   properties: {
     title: {
       type: "string",
-      minimum: 1,
-      maximum: 10,
+      minLength: 1,
+      maxLength: 10,
     },
+
     subtitle: {
       type: "string",
-      minimum: 1,
-      maximum: 10,
+      minLength: 1,
+      maxLength: 10,
     },
     author: {
       type: "object",
       properties: {
         firstName: {
           type: "string",
-          maximum: 15,
-          minimum: 1,
+          minLength: 1,
+          maxLength: 10,
         },
         lastName: {
           type: "string",
-          maximum: 20,
-          minimum: 1,
+          minLength: 1,
+          maxLength: 10,
         },
         age: {
-          type: "number",
+          type: "integer",
           minimum: 18,
           maximum: 100,
         },
-        required: ["firstName,lastName"],
       },
+      required: ["firstName", "lastName"],
     },
   },
-  required: ["title,author"],
+
+  required: ["title", "author"],
   additionalProperties: false,
 };
 
@@ -45,36 +48,38 @@ const patchSchema = {
   properties: {
     title: {
       type: "string",
-      minimum: 1,
-      maximum: 10,
+      minLength: 1,
+      maxLength: 10,
     },
+
     subtitle: {
       type: "string",
-      minimum: 1,
-      maximum: 10,
+      minLength: 1,
+      maxLength: 10,
     },
     author: {
       type: "object",
       properties: {
         firstName: {
           type: "string",
-          maximum: 15,
-          minimum: 1,
+          minLength: 1,
+          maxLength: 10,
         },
         lastName: {
           type: "string",
-          maximum: 20,
-          minimum: 1,
+          minLength: 1,
+          maxLength: 10,
         },
         age: {
-          type: "number",
+          type: "integer",
           minimum: 18,
           maximum: 100,
         },
-        required: ["firstName,lastName"],
       },
+      required: ["firstName", "lastName"],
     },
   },
+
   minProperties: 1,
   additionalProperties: false,
 };

@@ -2,6 +2,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const postRouter = require("./routes/posts.route.js");
+const postsEvents = require("./events.js");
+const { getPosts } = require("./controllers/postControllers.js");
 
 dotenv.config();
 
@@ -15,6 +17,8 @@ app.use((req, res, next) => {
   req.time = new Date();
   next();
 });
+
+getPosts();
 
 app.use("/posts", postRouter);
 app.use("/posts/:id", postRouter);

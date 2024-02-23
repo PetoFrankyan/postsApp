@@ -1,5 +1,7 @@
 const fs = require("fs");
 const postsFilePath = "./posts.json";
+const postsEvents = require("../events.js");
+const cache = require("../cache.js");
 
 const getPosts = () => {
   let posts = [];
@@ -11,12 +13,15 @@ const getPosts = () => {
       }
 
       posts = data.toString("utf8");
-      resolve(JSON.parse(posts));
+      const parsedPosts = JSON.parse(posts);
+      resolve(parsedPosts);
+      postsEvents.emit("updateCache", parsedPosts);
     });
   });
 };
 
 const createPost = (post) => {
+  console.log(cache);
   return new Promise((resolve, reject) => {
     getPosts().then((data) => {
       const length = data.length;
@@ -33,6 +38,7 @@ const createPost = (post) => {
           console.error(err.message);
           reject(err);
         }
+
         resolve(post);
       });
     });
@@ -40,7 +46,6 @@ const createPost = (post) => {
 };
 
 const updatePost = (currentPosts, index, newData, isPatch) => {
-  console.log(index);
   if (!isPatch) {
     currentPosts[index] = { ...newData, id: currentPosts[index].id };
   } else {
@@ -71,28 +76,9 @@ const deletePost = (receivedPosts, postIndex) => {
   });
 };
 
-const currentPost = (id) => {
-  return new Promise((resolve, reject) => {
-    getPosts()
-      .then((receivedPosts) => {
-        const postIndex = receivedPosts.findIndex((el) => el.id === Number(id));
-        if (postIndex !== -1) {
-          console.log(receivedPosts[postIndex]);
-          resolve(receivedPosts[postIndex]);
-        } else {
-          reject(error.message);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        reject(err);
-      });
-  });
-};
-
 const getPostsbylimit = async (offset, limit) => {
   try {
-    const posts = await getPosts();
+    const posts = postCache ? postCache : await getPosts();
     return posts.splice(offset, limit);
   } catch (err) {
     throw new Error(
@@ -106,6 +92,5 @@ module.exports = {
   createPost,
   deletePost,
   updatePost,
-  currentPost,
   getPostsbylimit,
 };

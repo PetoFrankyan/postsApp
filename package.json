@@ -5,7 +5,7 @@
   "main": "posts.js",
   "scripts": {
     "start": "node main.js",
-    "dev": "nodemon -e js main.js",
+    "dev": "nodemon -e js -i cache.js main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
